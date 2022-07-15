@@ -1,43 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning Vue</title>
+    <link rel="stylesheet" href="" />
+    <script src="vue.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Learning Vue</title>
-  <link rel="stylesheet" href="" />
-  <script src="vue.js"></script>
-</head>
+  <body>
+    <!-- <script src = "https://unpkg.com/vue@2.7.4/dist/vue.js"></script> -->
+    <!-- https://unpkg.com/vue@2.7.4/dist/vue.js -->
 
-<body>
-  <!-- <script src = "https://unpkg.com/vue@2.7.4/dist/vue.js"></script> -->
-  <!-- https://unpkg.com/vue@2.7.4/dist/vue.js -->
+    <div id="app">
+      <input type="text" v-on:input="changeTitle" />
+      <p v-once>{{title}}</p>
+      <p>{{secondTitle}} - <a :href="link">Google</a></p>
+      <p>{{sayHello()}}</p>
+      <p v-html="finishedLink"></p>
+      <p>{{counter}}</p>
+      <button v-on:click="increaseValue(2, $event)">Click me!</button>
+      <button v-on:click="counter++">Click me!</button>
+      <p>{{counter * 2 > 10 ? 'Greater than 10': 'Smaller than 10'}}</p>
+      <p v-on:mousemove="updateCoordinates">
+        The coordinates are: {{x}} / {{y}}
+        <br />
+        <br />
+        <span v-on:mousemove.stop.prevent="">DEAD SPOT</span>
+      </p>
+      <p v-on:mousemove="updateCoordinates">
+        The coordinates are: {{x}} / {{y}}
+        <br />
+        <br />
+        <span v-on:mousemove="dummy">DEAD SPOT</span>
+      </p>
+      <input type="text" v-on:keyup.enter.space="alertMe" />
+      <br />
+      <br />
+      <span>Second Input</span>
+      <input type="text" v-model="name" />
+      <p>{{name}}</p>
 
-  <div id="app">
-    <input type="text" v-on:input="changeTitle" />
-    <p>{{title}}</p>
-    <p>{{secondTitle}} - <a v-bind:href="link">Google</a> </p>
-
-  </div>
-  <script>
-    new Vue({
-      el: "#app",
-      data: {
-        title: "",
-        secondTitle: "Hello World!",
-        link: 'https://google.com'
-      },
-      methods: {
-        changeTitle: function (event) {
-          this.title = event.target.value;
+      <!-- Short forms on v-on:click are :href / @click -->
+      <button v-on:click="counterNewMethod++">Increase</button>
+      <button v-on:click="counterNewMethod--">Decrease</button>
+      <button v-on:click="secondCounter++">Increase Second</button>
+      <p>Counter: {{counterNewMethod}} | SecondCounter: {{secondCounter}}</p>
+      <p>Result: {{result()}} OutPut: {{output}}</p>
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          title: "Initial state",
+          secondTitle: "Hello World!",
+          link: "https://google.com",
+          finishedLink: '<a href="https://www.farsroid.com/">farsroid</a>',
+          counter: 0,
+          y: 0,
+          x: 0,
+          name: "max",
+          counterNewMethod: 0,
+          secondCounter: 0,
         },
-        sayHello(){
-          return this.secondTitle
-        }
-      },
-    });
-  </script>
-</body>
+        computed: {
+          output() {
+            console.log("Computed");
+            return this.secondCounter >= 5
+              ? "Greater than 5"
+              : "Smaller than 5";
+          },
+        },
+        watch: {
+          secondCounter() {
+            let vm = this;
+            setTimeout(() => {
+              vm.secondCounter = 0;
+            }, 5000);
+          },
+        },
+        methods: {
+          changeTitle: function (event) {
+            this.title = event.target.value;
+          },
+          sayHello() {
+            this.title = "Bye";
 
+            return this.secondTitle;
+          },
+          increaseValue(step, event) {
+            // console.log("khers");
+            this.counter += step;
+          },
+          updateCoordinates: function (event) {
+            this.x = event.clientX;
+            this.y = event.clientY;
+          },
+          dummy(event) {
+            event.stopPropagation();
+          },
+          alertMe() {
+            alert("Hey");
+          },
+          result() {
+            console.log("Method");
+            return this.counterNewMethod >= 5
+              ? "Greater than 5"
+              : "Smaller than 5";
+          },
+        },
+      });
+    </script>
+  </body>
 </html>
