@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning Vue</title>
+    <link rel="stylesheet" href="" />
+    <script src="vue.js"></script>
+  </head>
+
+  <body>
+    <!-- <script src = "https://unpkg.com/vue@2.7.4/dist/vue.js"></script> -->
+    <!-- https://unpkg.com/vue@2.7.4/dist/vue.js -->
+
+    <div id="app">
+      <p v-if="show">You can see me! <span>span part</span></p>
+      <p v-else>You can't see me</p>
+      <template v-if="show">
+        <h1>Heading</h1>
+        <p>Inside a tamplate</p>
+      </template>
+      <h2 v-show="show">showing</h2>
+      <button @click="show = !show">Switch</button>
+      <hr />
+      <ul>
+        <!--   if in a forr loop are updated in different place than they are expected to be, use :key -->
+        <li v-for="(cusingredient, i) in ingredients" :key="cusingredient">
+          {{cusingredient}} ({{i}})
+        </li>
+        <button @click="ingredients.push('spices')">Add new</button>
+      </ul>
+      <hr />
+      <ul>
+        <li v-for="person in persons">{{person.age}}</li>
+      </ul>
+
+      <ul>
+        <li v-for="personlist in persons">
+          {{personlist.age}}
+          <div v-for="(value, key, index) in personlist">
+            {{key}}: {{value}} ({{index}})
+          </div>
+        </li>
+      </ul>
+
+      <hr />
+      <br />
+      <span v-for="n in 10">{{n}}. </span>
+      <br />
+      <hr />
+      <template v-for="(cusingredient, index) in ingredients">
+        <h5>{{cusingredient}}</h5>
+        <p>{{index}}</p>
+      </template>
+    </div>
+    <script>
+      new Vue({
+        el: "#app",
+        data: {
+          show: false,
+          ingredients: ["meat", "fruit", "cookies"],
+          persons: [
+            { name: "Max", age: 27, color: "Red" },
+            { name: "Anna", age: "unknown", color: "blue" },
+          ],
+        },
+      });
+    </script>
+  </body>
+</html>
