@@ -1,58 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Learning Vue</title>
-    <script src="vue.js"></script>
-  </head>
 
-  <body>
-    <div id="app1">
-      <h1>{{title}}</h1>
-      <button @click="show">Show paragraph</button>
-      <p v-if="showParagraph">This isn't always visible</p>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Learning Vue</title>
+  <script src="vue.js"></script>
+</head>
 
-    <div id="app2">
-      <h1>{{title}}</h1>
-    </div>
+<body>
+  <div id="app1">
+    <h1>{{title}}</h1>
+    <button @click="show">Show paragraph</button>
+    <p v-if="showParagraph">This isn't always visible</p>
+  </div>
 
-    <script>
-      new Vue({
-        el: "#app1",
-        data: {
-          title: "The VueJS instance",
-          showParagraph: false,
-        },
-        methods: {
-          show() {
-            this.showParagraph = true;
-            this.updateTitle("Update VueJS instance");
-          },
-          updateTitle(title) {
-            this.title = title;
-          },
-        },
-        computed: {
-          lowerCaseTitle() {
-            return this.title.toLowerCase();
-          },
-        },
-        watch: {
-          title(value) {
-            alert("Title changed. New value is: " + value);
-          },
-        },
-      });
+  <div id="app2">
+    <h1>{{title}}</h1>
+<button @click="onChange">Change something in vue 1</button>
+  </div>
+<hr>
+<div id="app3"></div>
 
-      new Vue({
-        el: "#app2",
-        data: {
-          title: "Second VueJS instance",
-          showParagraph: false,
-        }})
-    </script>
-  </body>
+  <script>
+
+Vue.component('HelloComponent',{
+  
+})
+
+
+    var vm1 = new Vue({
+      // el: "#app1",
+      data: {
+        title: "The VueJS instance",
+        showParagraph: false,
+      },
+      methods: {
+        show() {
+          this.showParagraph = true;
+          this.updateTitle("Update VueJS instance");
+        },
+        updateTitle(title) {
+          this.title = title;
+        },
+      },
+      computed: {
+        lowerCaseTitle() {
+          return this.title.toLowerCase();
+        },
+      },
+      watch: {
+        title(value) {
+          alert("Title changed. New value is: " + value);
+        },
+      },
+    });
+
+
+    vm1.$mount('#app1')
+
+setTimeout(() => {
+  // vm1.title = 'Changed by TIMER'
+  vm.show()
+}, 3000);
+
+    var vm2 = new Vue({
+      el: "#app2",
+      data: {
+        title: "Second VueJS instance",
+        showParagraph: false,
+      }, 
+      methods:{
+        onChange(){
+          vm1.title = 'Changed by 2!'
+        }
+      }
+    })
+
+
+var vm3 = new Vue({
+  
+  template:'<a href="www.farsroid.com">farsroid</a>'
+})
+
+vm3.$mount()
+document.getElementById('app3').appendChild(vm3.$el)
+
+  </script>
+</body>
+
 </html>
