@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning Vue</title>
+    <script src="vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app1">
+      <h1>{{title}}</h1>
+      <button @click="title = 'Changed to new'">Update title</button>
+      <button @click="destroy">Destroy</button>
+      <customcomponent></customcomponent>
+
+      <button @click="show">Show paragraph</button>
+      <p v-if="showParagraph">This isn't always visible</p>
+    </div>
+
+    <div id="app2">
+      <h1>{{title}}</h1>
+      <button @click="onChange">Change something in vue 1</button>
+    </div>
+    <hr />
+    <div id="app3"></div>
+
+    <script>
+      Vue.component("customcomponent", {
+        template: "<h1>Text inside of component</h1>",
+      });
+
+      var vm1 = new Vue({
+        // el: "#app1",
+        data: {
+          title: "The VueJS instance",
+          showParagraph: false,
+        },
+        beforeCreate() {
+          console.log("beforeCreate");
+        },
+        created() {
+          console.log("created");
+        },
+        beforeMount() {
+          console.log("beforeMount");
+        },
+        mounted() {
+          console.log("mounted");
+        },
+        beforeUpdate() {
+          console.log("beforeUpdate");
+        },
+        updated() {
+          console.log("updated");
+        },
+        beforeDestroy() {
+          console.log("beforeDestroy");
+        },
+        destroyed() {
+          console.log("destroyed");
+        },
+        methods: {
+          show() {
+            this.showParagraph = true;
+            this.updateTitle("Update VueJS instance");
+          },
+          updateTitle(title) {
+            this.title = title;
+          },
+          destroy() {
+            this.$destroy()
+          },
+        },
+        computed: {
+          lowerCaseTitle() {
+            return this.title.toLowerCase();
+          },
+        },
+        watch: {
+          title(value) {
+            alert("Title changed. New value is: " + value);
+          },
+        },
+      });
+
+      vm1.$mount("#app1");
+
+      // setTimeout(() => {
+      //   // vm1.title = 'Changed by TIMER'
+      //   vm1.show()
+      // }, 3000);
+
+      var vm2 = new Vue({
+        el: "#app2",
+        data: {
+          title: "Second VueJS instance",
+          showParagraph: false,
+        },
+        methods: {
+          onChange() {
+            vm1.title = "Changed by 2!";
+          },
+        },
+      });
+
+      var vm3 = new Vue({
+        template: "<h4>Text inside of template</h4>",
+      });
+
+      vm3.$mount();
+      document.getElementById("app3").appendChild(vm3.$el);
+    </script>
+  </body>
+</html>
